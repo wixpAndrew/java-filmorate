@@ -11,5 +11,4 @@ public class Post {
     int id;
     String description;
     Instant postDate;
-
 }

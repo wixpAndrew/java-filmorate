@@ -61,7 +61,7 @@ public class UserController {
 
         if (user.getPassword() != null) {
             finalUser.setPassword(user.getPassword());
-        }
+        }   
 
         if (user.getUsername() != null) {
             finalUser.setUsername(user.getUsername());
