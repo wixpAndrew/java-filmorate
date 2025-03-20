@@ -16,5 +16,5 @@ public class User {
 
     String email;
 
-    String birthday;
+    LocalDateTime birthday;
 }

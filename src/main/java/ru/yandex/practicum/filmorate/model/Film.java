@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,16 @@ public class Film {
 
     String description;
 
-    LocalDateTime releaseDate;
+    LocalDateTime localDateTime;
 
     Duration duration;
+
+
+    public Film(int id, String name, String description, LocalDateTime localDateTime, Duration duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.localDateTime = localDateTime;
+        this.duration = duration;
+    }
 }
