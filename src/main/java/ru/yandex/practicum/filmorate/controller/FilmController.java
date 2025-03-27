@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,8 +25,10 @@ import static java.rmi.server.LogStream.log;
 public class FilmController {
 
     private final static Logger log = LoggerFactory.getLogger(FilmController.class);
-    HashMap<Integer, Film>  films = new HashMap<>();
-    private final static LocalDateTime DATE_MIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0 );
+
+    private HashMap<Integer, Film> films = new HashMap<>();
+
+    private final static LocalDateTime DATE_MIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
 
     @GetMapping
     public Collection<Film> getFilms() {
@@ -33,11 +36,10 @@ public class FilmController {
     }
 
     @PostMapping
-    private Film appendFilm(@RequestBody Film film) {
+    public Film appendFilm(@RequestBody Film film) {
         checkingFilm(film);
-        film.setId(generateId());
         films.put(film.getId(), film);
-        log("ДОБАВЛЕНИЕ ФИЛЬМ ");
+        log.info("ДОБАВЛЕНИЕ ФИЛЬМА");
         return film;
     }
 
@@ -45,7 +47,7 @@ public class FilmController {
     public Film updateFilm(@RequestBody Film film) {
         checkingFilm(film);
         films.put(film.getId(), film);
-        log(" ОБНОВЛЕНИЕ ФИЛЬМА");
+        log.info("ОБНОВЛЕНИЕ ФИЛЬМА");
         return film;
     }
 
@@ -59,7 +61,7 @@ public class FilmController {
     }
 
     private void checkingFilm(Film film) {
-        if (film.getName() == null) {
+        if (film.getName().isEmpty()) {
             throw new ValidationException("имя не может быть пустым!");
         }
 
@@ -68,7 +70,7 @@ public class FilmController {
         }
 
         if (film.getLocalDateTime().isBefore(DATE_MIN)) {
-            throw new ValidationException("дата релиза не может быть раньше 28 декабря 1895 года !");
+            throw new ValidationException("дата релиза не может быть раньше 28 декабря 1895 года!");
         }
 
         if (film.getDuration().isNegative() || film.getDuration().isZero()) {

@@ -30,13 +30,12 @@ public class UserController {
 
     @PostMapping
     public User appendUser(@RequestBody User user) {
-        if (user.getEmail() == null ) { // имеется ли почта
+        if (user.getEmail() == null ) {
             throw new DuplicatedDataException("Имейл должен быть указан");
         }
-        if (users.containsKey(user.getId())) { // был ли добавлен раньше
+        if (users.containsKey(user.getId())) {
             throw new DuplicatedDataException("Этот имейл уже используется");
         }
-
         user.setId(generateId());
         users.put(user.getId(), user);
         log("ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
