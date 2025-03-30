@@ -30,6 +30,7 @@ public class UserController {
 
     @PostMapping
     public User appendUser(@RequestBody User user) {
+        checkingUser(user);
         if (user.getEmail() == null ) {
             throw new DuplicatedDataException("Имейл должен быть указан");
         }
@@ -56,10 +57,6 @@ public class UserController {
             throw new IllegalArgumentException("Пользователь не найден");
         }
 
-        if (Integer.valueOf(user.getId()) == null) {
-            throw new ConditionsNotMetException("Id должен быть указан");
-        }
-
         if (isNewEmail && emailExists) {
             throw new DuplicatedDataException("Этот имейл уже используется");
         } else {
@@ -72,6 +69,10 @@ public class UserController {
 
         if (user.getUsername() != null) {
             finalUser.setUsername(user.getUsername());
+        }
+
+        if (user.getLogin() != null) {
+            finalUser.setLogin(user.getLogin());
         }
         log("ОБНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ПОСЛЕ ФИЛЬТРАЦИИ");
         users.put(user.getId(), finalUser);
