@@ -1,6 +1,4 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -8,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -119,6 +116,8 @@ public class FilmTest {
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
                 negativeDuration);
 
+        //-----------------------------------------------------------------------------------------
+        // -------------------------------------POST---------------------------
         this.mvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(filmEmptyName))
@@ -142,5 +141,31 @@ public class FilmTest {
                         .content(objectMapper.writeValueAsString(filmBadDuratiom))
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
                 .andExpect(status().is4xxClientError());
+        //--------------------------------------------------------------------------------------------------
+        //------------ PUT---------------------------------
+        this.mvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmEmptyName))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Имя не может быть пустым!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmLimitSimvols))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Описание не может превышать 200 символов!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmLimitlocalDateTime))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Дата релиза не может быть раньше 28 декабря 1895 года!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmBadDuratiom))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
+                .andExpect(status().is4xxClientError());
+        //---------------------------------------------------------------------------------------------------
     }
 }

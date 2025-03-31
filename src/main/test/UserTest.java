@@ -40,18 +40,18 @@ public class UserTest {
         this.mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(result))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         this.mvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].id").value(user.getId()))
-                        .andExpect(jsonPath("$[0].username").value(user.getUsername()))
-                        .andExpect(jsonPath("$[0].login").value(user.getLogin()))
-                        .andExpect(jsonPath("$[0].password").value(user.getPassword()))
-                        .andExpect(jsonPath("$[0].email").value(user.getEmail()))
-                        .andExpect(jsonPath("$[0].birthday").value(user.getBirthday().toString()))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(user.getId()))
+                .andExpect(jsonPath("$[0].username").value(user.getUsername()))
+                .andExpect(jsonPath("$[0].login").value(user.getLogin()))
+                .andExpect(jsonPath("$[0].password").value(user.getPassword()))
+                .andExpect(jsonPath("$[0].email").value(user.getEmail()))
+                .andExpect(jsonPath("$[0].birthday").value(user.getBirthday().toString()))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class UserTest {
                 "dfdf",
                 "example@email.com",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
-    userController.appendUser(user1);
+        userController.appendUser(user1);
 
         User user2 = new User(1,
                 "got",
@@ -70,24 +70,67 @@ public class UserTest {
                 "dfdfnj",
                 "reload@email.com",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
-                userController.updateUser(user2);
+        userController.updateUser(user2);
 
         String result = objectMapper.writeValueAsString(user2);
 
         this.mvc.perform(put("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(result))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         this.mvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].id").value(user2.getId()))
-                        .andExpect(jsonPath("$[0].username").value(user2.getUsername()))
-                        .andExpect(jsonPath("$[0].login").value(user2.getLogin()))
-                        .andExpect(jsonPath("$[0].password").value(user2.getPassword()))
-                        .andExpect(jsonPath("$[0].email").value(user2.getEmail()))
-                        .andExpect(jsonPath("$[0].birthday").value(user2.getBirthday().toString()))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(user2.getId()))
+                .andExpect(jsonPath("$[0].username").value(user2.getUsername()))
+                .andExpect(jsonPath("$[0].login").value(user2.getLogin()))
+                .andExpect(jsonPath("$[0].password").value(user2.getPassword()))
+                .andExpect(jsonPath("$[0].email").value(user2.getEmail()))
+                .andExpect(jsonPath("$[0].birthday").value(user2.getBirthday().toString()))
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void validationException() throws Exception {
+            User userEmailNoSimvol = new User(1,
+                    "обливион",
+                    "dfdfdffd",
+                    "dfdf",
+                    "exampleemail.com",
+                    LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+            userController.appendUser(userEmailNoSimvol);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userEmailNoSimvol))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в почте !"))
+                .andExpect(status().is4xxClientError());
+//------------------------------------------------------------------------------------------
+        User userLoginEmpty = new User(1,
+                "обливион",
+                "",
+                "dfdf",
+                "exampleemail.com",
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+        userController.appendUser(userLoginEmpty);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userLoginEmpty))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в логине !"))
+                .andExpect(status().is4xxClientError());
+//-----------------------------------------------------------------------------------------
+        User userEmailNull = new User(1,
+                "обливион",
+                "dfdfdfd",
+                "dfdf",
+                "",
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+        userController.appendUser(userEmailNull);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userEmailNull))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в почте !"))
+                .andExpect(status().is4xxClientError());
+//-----------------------------------------------------------------------------------------
+
     }
 }
