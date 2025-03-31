@@ -3,8 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.print.attribute.standard.PagesPerMinute;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
