@@ -35,7 +35,7 @@ public class FilmTest {
                 "обливион",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+                100);
 
         filmController.appendFilm(film);
 
@@ -52,7 +52,7 @@ public class FilmTest {
                         .andExpect(jsonPath("$[0].id").value(film.getId()))
                         .andExpect(jsonPath("$[0].name").value(film.getName()))
                         .andExpect(jsonPath("$[0].description").value(film.getDescription()))
-                        .andExpect(jsonPath("$[0].duration").value(film.getDuration().toString()))
+                        .andExpect(jsonPath("$[0].duration").value(film.getDuration()))
                         .andExpect(status().isOk());
     }
 
@@ -61,15 +61,15 @@ public class FilmTest {
         Film film1 = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0,50),
+                100);
         filmController.appendFilm(film1);
 
         Film film2 = new Film(1,
                 "смурфики",
                 "круто",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0, 40),
+                100);
         filmController.updateFilm(film2);
 
         String result = objectMapper.writeValueAsString(film2);
@@ -85,36 +85,36 @@ public class FilmTest {
                         .andExpect(jsonPath("$[0].id").value(film2.getId()))
                         .andExpect(jsonPath("$[0].name").value(film2.getName()))
                         .andExpect(jsonPath("$[0].description").value(film2.getDescription()))
-                        .andExpect(jsonPath("$[0].duration").value(film2.getDuration().toString()))
+                        .andExpect(jsonPath("$[0].releaseDate").value(film2.getReleaseDate().toString()))
+                        .andExpect(jsonPath("$[0].duration").value(film2.getDuration()))
                         .andExpect(status().isOk());
     }
 
     @Test
     public void validationExceptions() throws Exception {
-        Duration negativeDuration = Duration.ofMinutes(-100);
         Film filmEmptyName = new Film(1,
                 "",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+               100);
 
         Film filmLimitSimvols = new Film(1,
                 "обливион",
                 "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+                100);
 
         Film filmLimitlocalDateTime = new Film(1,
                 "обливион",
                 "nice",
                 LocalDateTime.of(1700, Month.DECEMBER, 28, 0, 0),
-                Duration.ofMinutes(100));
+                100);
 
         Film filmBadDuratiom = new Film(1,
                 "обливион",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                negativeDuration);
+                -100);
 
         //-----------------------------------------------------------------------------------------
         // -------------------------------------POST---------------------------

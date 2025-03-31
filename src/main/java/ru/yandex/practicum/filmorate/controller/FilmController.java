@@ -73,11 +73,11 @@ public class FilmController {
             throw new ValidationException("Описание не может превышать 200 символов!");
         }
 
-        if (film.getLocalDateTime().isBefore(dateMin)) {
+        if (film.getReleaseDate().isBefore(dateMin)) {
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года!");
         }
 
-        if (film.getDuration().isNegative() || film.getDuration().isZero()) {
+        if (film.getDuration() <= 0) {
             throw new ValidationException("Продолжительность фильма должна быть положительным числом!");
         }
     }
