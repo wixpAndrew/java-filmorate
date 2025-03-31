@@ -35,7 +35,7 @@ public class FilmTest {
                 "обливион",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
 
         filmController.appendFilm(film);
 
@@ -62,14 +62,14 @@ public class FilmTest {
                 "обливион",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
         filmController.appendFilm(film1);
 
         Film film2 = new Film(1,
                 "смурфики",
                 "круто",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
         filmController.updateFilm(film2);
 
         String result = objectMapper.writeValueAsString(film2);
@@ -91,24 +91,24 @@ public class FilmTest {
 
     @Test
     public void validationExceptions() throws Exception {
-        Duration negativeDuration = Duration.ofHours(-5).plusMinutes(-30);
+        Duration negativeDuration = Duration.ofMinutes(-100);
         Film filmEmptyName = new Film(1,
                 "",
                 "nice",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
 
         Film filmLimitSimvols = new Film(1,
                 "обливион",
                 "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
                 LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
 
         Film filmLimitlocalDateTime = new Film(1,
                 "обливион",
                 "nice",
                 LocalDateTime.of(1700, Month.DECEMBER, 28, 0, 0),
-                Duration.parse("PT2H30M"));
+                Duration.ofMinutes(100));
 
         Film filmBadDuratiom = new Film(1,
                 "обливион",

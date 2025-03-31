@@ -16,7 +16,7 @@ public class Film {
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime localDateTime;
-
+    
     Duration duration;
 
 
