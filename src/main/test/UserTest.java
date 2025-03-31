@@ -90,7 +90,7 @@ public class UserTest {
                 .andExpect(jsonPath("$[0].birthday").value(user2.getBirthday().toString()))
                 .andExpect(status().isOk());
     }
-    
+
     @Test
     public void validationException() throws Exception {
             User userEmailNoSimvol = new User(1,
@@ -132,6 +132,5 @@ public class UserTest {
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в почте !"))
                 .andExpect(status().is4xxClientError());
 //-----------------------------------------------------------------------------------------
-
     }
 }
