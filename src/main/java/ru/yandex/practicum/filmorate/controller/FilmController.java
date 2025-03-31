@@ -21,7 +21,7 @@ public class FilmController {
 
     private HashMap<Integer, Film> films = new HashMap<>();
 
-    private final LocalDateTime DATEMIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
+    private final LocalDateTime dateMin = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
 
     @GetMapping
     public Collection<Film> getFilms() {
@@ -73,7 +73,7 @@ public class FilmController {
             throw new ValidationException("Описание не может превышать 200 символов!");
         }
 
-        if (film.getLocalDateTime().isBefore(DATEMIN)) {
+        if (film.getLocalDateTime().isBefore(dateMin)) {
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года!");
         }
 
