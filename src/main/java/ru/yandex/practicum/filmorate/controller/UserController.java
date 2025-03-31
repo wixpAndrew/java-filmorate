@@ -19,7 +19,7 @@ import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 public class UserController {
 
     private final Map<Integer, User> users = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public Collection<User> getAllUsers() {
