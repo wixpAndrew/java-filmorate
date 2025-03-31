@@ -17,11 +17,11 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
 
-    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
+    private final  Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private HashMap<Integer, Film> films = new HashMap<>();
 
-    private final static LocalDateTime DATE_MIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
+    private final  LocalDateTime DATE_MIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
 
     @GetMapping
     public Collection<Film> getFilms() {
