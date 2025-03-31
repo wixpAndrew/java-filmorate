@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ContextConfiguration(classes=FilmController.class)
+@ContextConfiguration(classes = FilmController.class)
 @WebMvcTest(FilmController.class)
 public class FilmTest {
-    private final  Duration BASIK_DURATION = Duration.parse("PT2H30M");
+    private final Duration basikDuration = Duration.parse("PT2H30M");
 
     @Autowired
     MockMvc mvc;
@@ -34,7 +34,7 @@ public class FilmTest {
         Film film = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
 
         filmController.appendFilm(film);
@@ -61,14 +61,14 @@ public class FilmTest {
         Film film1 = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
         filmController.appendFilm(film1);
 
         Film film2 = new Film(1,
                 "смурфики",
                 "круто",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
         filmController.updateFilm(film2);
 
@@ -95,25 +95,25 @@ public class FilmTest {
         Film filmEmptyName = new Film(1,
                 "",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
 
         Film filmLimitSimvols = new Film(1,
                 "обливион",
                 "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
 
         Film filmLimitlocalDateTime = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(1700, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(1700, Month.DECEMBER, 28, 0, 0),
                 Duration.parse("PT2H30M"));
 
         Film filmBadDuratiom = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0 ),
+                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
                 negativeDuration);
 
         //-----------------------------------------------------------------------------------------
