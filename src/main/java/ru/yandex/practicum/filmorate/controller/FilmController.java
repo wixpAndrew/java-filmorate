@@ -17,11 +17,11 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
 
-    private final  Logger log = LoggerFactory.getLogger(FilmController.class);
+    private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private HashMap<Integer, Film> films = new HashMap<>();
 
-    private final  LocalDateTime DATE_MIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
+    private final LocalDateTime DATEMIN = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
 
     @GetMapping
     public Collection<Film> getFilms() {
@@ -73,7 +73,7 @@ public class FilmController {
             throw new ValidationException("Описание не может превышать 200 символов!");
         }
 
-        if (film.getLocalDateTime().isBefore(DATE_MIN)) {
+        if (film.getLocalDateTime().isBefore(DATEMIN)) {
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года!");
         }
 
