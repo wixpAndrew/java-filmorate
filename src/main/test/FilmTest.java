@@ -64,7 +64,7 @@ public class FilmTest {
 
     @Test
     public void updatingFilm() throws Exception {
-        LocalDate localDate = LocalDate.of(2009, 10 ,4);
+        LocalDate localDate = LocalDate.of(2009, 10,4);
         Film film1 = new Film(1,
                 "обливион",
                 "nice",
