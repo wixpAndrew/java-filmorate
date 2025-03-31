@@ -87,9 +87,6 @@ public class UserController {
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (DuplicatedDataException exception) {
-            log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
