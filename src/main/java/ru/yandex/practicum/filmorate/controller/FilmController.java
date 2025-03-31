@@ -20,7 +20,7 @@ public class FilmController {
 
     private HashMap<Integer, Film> films = new HashMap<>();
 
-    private final LocalDate dateMin =LocalDate.of(1895, 12, 28);
+    private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
 
     @GetMapping
     public Collection<Film> getFilms() {
