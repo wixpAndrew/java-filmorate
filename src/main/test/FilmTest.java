@@ -7,9 +7,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.model.Film;
+
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FilmController.class)
 public class FilmTest {
     private final Duration basikDuration = Duration.parse("PT2H30M");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     @Autowired
     MockMvc mvc;
@@ -31,10 +38,12 @@ public class FilmTest {
     @Test
     public void appendingFilm() throws Exception {
 
+       LocalDate localDate = LocalDate.of(2009, 10, 4);
+
         Film film = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
+                localDate,
                 100);
 
         filmController.appendFilm(film);
@@ -53,22 +62,25 @@ public class FilmTest {
                         .andExpect(jsonPath("$[0].name").value(film.getName()))
                         .andExpect(jsonPath("$[0].description").value(film.getDescription()))
                         .andExpect(jsonPath("$[0].duration").value(film.getDuration()))
+                        .andExpect(jsonPath("$[0].releaseDate").value(film.getReleaseDate().toString()))
                         .andExpect(status().isOk());
     }
 
     @Test
     public void updatingFilm() throws Exception {
+        LocalDate localDate = LocalDate.of(2009, 10 ,4);
         Film film1 = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0,50),
+              localDate,
                 100);
         filmController.appendFilm(film1);
 
+        LocalDate localDate1 = LocalDate.of(2009, 10, 14);
         Film film2 = new Film(1,
                 "смурфики",
                 "круто",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0, 40),
+                localDate1,
                 100);
         filmController.updateFilm(film2);
 
@@ -92,28 +104,30 @@ public class FilmTest {
 
     @Test
     public void validationExceptions() throws Exception {
+        LocalDate localDate =  LocalDate.of(2009, 12, 5);
         Film filmEmptyName = new Film(1,
                 "",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
+               localDate,
                100);
 
         Film filmLimitSimvols = new Film(1,
                 "обливион",
                 "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
+              localDate,
                 100);
 
+        LocalDate badLocalDate = LocalDate.of(1700, 1, 1);
         Film filmLimitlocalDateTime = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(1700, Month.DECEMBER, 28, 0, 0),
+                badLocalDate,
                 100);
 
         Film filmBadDuratiom = new Film(1,
                 "обливион",
                 "nice",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0),
+                localDate,
                 -100);
 
         //-----------------------------------------------------------------------------------------

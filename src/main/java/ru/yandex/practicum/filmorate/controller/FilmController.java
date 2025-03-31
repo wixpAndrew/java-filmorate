@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 @RestController
@@ -21,7 +24,7 @@ public class FilmController {
 
     private HashMap<Integer, Film> films = new HashMap<>();
 
-    private final LocalDateTime dateMin = LocalDateTime.of(1895, Month.DECEMBER, 28, 0, 0);
+    private final LocalDate dateMin =LocalDate.of(1895, 12, 28);
 
     @GetMapping
     public Collection<Film> getFilms() {
