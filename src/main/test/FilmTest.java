@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes=FilmController.class)
 @WebMvcTest(FilmController.class)
 public class FilmTest {
-    private final static Duration BASIK_DURATION = Duration.parse("PT2H30M");
+    private final  Duration BASIK_DURATION = Duration.parse("PT2H30M");
 
     @Autowired
     MockMvc mvc;
