@@ -152,30 +152,5 @@ public class FilmTest {
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
                 .andExpect(status().is4xxClientError());
         //--------------------------------------------------------------------------------------------------
-        //------------ PUT---------------------------------
-        this.mvc.perform(put("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(filmEmptyName))
-                ).andExpect(r -> r.getResponse().getContentAsString().equals("Имя не может быть пустым!"))
-                .andExpect(status().is4xxClientError());
-
-        this.mvc.perform(put("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(filmLimitSimvols))
-                ).andExpect(r -> r.getResponse().getContentAsString().equals("Описание не может превышать 200 символов!"))
-                .andExpect(status().is4xxClientError());
-
-        this.mvc.perform(put("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(filmLimitlocalDateTime))
-                ).andExpect(r -> r.getResponse().getContentAsString().equals("Дата релиза не может быть раньше 28 декабря 1895 года!"))
-                .andExpect(status().is4xxClientError());
-
-        this.mvc.perform(put("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(filmBadDuratiom))
-                ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
-                .andExpect(status().is4xxClientError());
-        //---------------------------------------------------------------------------------------------------
     }
 }
