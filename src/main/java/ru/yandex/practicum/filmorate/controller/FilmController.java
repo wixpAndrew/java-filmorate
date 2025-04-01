@@ -37,7 +37,7 @@ public class FilmController {
             return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
             log.error("Ошибка валидации при добавлении фильма: {}", ex.getMessage());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
