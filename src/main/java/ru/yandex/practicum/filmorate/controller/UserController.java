@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -108,7 +109,7 @@ public class UserController {
             throw new ValidationException("ошибка в логине !");
         }
 
-       if (user.getBirthday().isAfter(LocalDateTime.now())) {
+       if (user.getBirthday().isAfter(LocalDate.now())) {
            throw new ValidationException("ошибка в указании Вашего Дня Рождения !");
        }
     }

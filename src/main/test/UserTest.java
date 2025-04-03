@@ -7,6 +7,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,12 +30,13 @@ public class UserTest {
 
     @Test
     public void appendingUser() throws Exception {
+        LocalDate localDate = LocalDate.of(2009, 12, 28);
         User user = new User(1,
                 "обливион",
                 "nice",
                 "dfdf",
                 "example@email.com",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+                localDate);
 
         String result = objectMapper.writeValueAsString(user);
 
@@ -56,12 +59,13 @@ public class UserTest {
 
     @Test
     public void updatingFilm() throws Exception {
+        LocalDate localDate = LocalDate.of(2009, 12, 28);
         User user1 = new User(1,
                 "обливион",
                 "nice",
                 "dfdf",
                 "example@email.com",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+               localDate);
         userController.appendUser(user1);
 
         User user2 = new User(1,
@@ -69,7 +73,7 @@ public class UserTest {
                 "perfect",
                 "dfdfnj",
                 "reload@email.com",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+                localDate);
         userController.updateUser(user2);
 
         String result = objectMapper.writeValueAsString(user2);
@@ -93,12 +97,13 @@ public class UserTest {
 
     @Test
     public void validationException() throws Exception {
+        LocalDate localDate = LocalDate.of(2009,12,28);
             User userEmailNoSimvol = new User(1,
                     "обливион",
                     "dfdfdffd",
                     "dfdf",
                     "exampleemail.com",
-                    LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+                   localDate);
             userController.appendUser(userEmailNoSimvol);
         this.mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +116,7 @@ public class UserTest {
                 "",
                 "dfdf",
                 "exampleemail.com",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+              localDate);
         userController.appendUser(userLoginEmpty);
         this.mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +129,7 @@ public class UserTest {
                 "dfdfdfd",
                 "dfdf",
                 "",
-                LocalDateTime.of(2009, Month.DECEMBER, 28, 0, 0));
+            localDate);
         userController.appendUser(userEmailNull);
         this.mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
