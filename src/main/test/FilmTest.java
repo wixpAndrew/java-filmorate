@@ -98,59 +98,59 @@ public class FilmTest {
                         .andExpect(status().isOk());
     }
 
-//    @Test
-//    public void validationExceptions() throws Exception {
-//        LocalDate localDate =  LocalDate.of(2009, 12, 5);
-//        Film filmEmptyName = new Film(1,
-//                "",
-//                "nice",
-//               localDate,
-//               100);
-//
-//        Film filmLimitSimvols = new Film(1,
-//                "обливион",
-//                "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
-//              localDate,
-//                100);
-//
-//        LocalDate badLocalDate = LocalDate.of(1700, 1, 1);
-//        Film filmLimitlocalDateTime = new Film(1,
-//                "обливион",
-//                "nice",
-//                badLocalDate,
-//                100);
-//
-//        Film filmBadDuratiom = new Film(1,
-//                "обливион",
-//                "nice",
-//                localDate,
-//                -100);
-//
-//        //-----------------------------------------------------------------------------------------
-//        // -------------------------------------POST---------------------------
-//        this.mvc.perform(post("/films")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(filmEmptyName))
-//                ).andExpect(r -> r.getResponse().getContentAsString().equals("Имя не может быть пустым!"))
-//                .andExpect(status().is4xxClientError());
-//
-//        this.mvc.perform(post("/films")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(filmLimitSimvols))
-//                ).andExpect(r -> r.getResponse().getContentAsString().equals("Описание не может превышать 200 символов!"))
-//                .andExpect(status().is4xxClientError());
-//
-//        this.mvc.perform(post("/films")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(filmLimitlocalDateTime))
-//                ).andExpect(r -> r.getResponse().getContentAsString().equals("Дата релиза не может быть раньше 28 декабря 1895 года!"))
-//                .andExpect(status().is4xxClientError());
-//
-//        this.mvc.perform(post("/films")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(filmBadDuratiom))
-//                ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
-//                .andExpect(status().is4xxClientError());
-//        //--------------------------------------------------------------------------------------------------
-   // }
+    @Test
+    public void validationExceptions() throws Exception {
+        LocalDate localDate =  LocalDate.of(2009, 12, 5);
+        Film filmEmptyName = new Film(1,
+                "",
+                "nice",
+               localDate,
+               100);
+
+        Film filmLimitSimvols = new Film(1,
+                "обливион",
+                "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
+              localDate,
+                100);
+
+        LocalDate badLocalDate = LocalDate.of(1700, 1, 1);
+        Film filmLimitlocalDateTime = new Film(1,
+                "обливион",
+                "nice",
+                badLocalDate,
+                100);
+
+        Film filmBadDuratiom = new Film(1,
+                "обливион",
+                "nice",
+                localDate,
+                -100);
+
+        //-----------------------------------------------------------------------------------------
+        // -------------------------------------POST---------------------------
+        this.mvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmEmptyName))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Имя не может быть пустым!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmLimitSimvols))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Описание не может превышать 200 символов!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmLimitlocalDateTime))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Дата релиза не может быть раньше 28 декабря 1895 года!"))
+                .andExpect(status().is4xxClientError());
+
+        this.mvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(filmBadDuratiom))
+                ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
+                .andExpect(status().is4xxClientError());
+        //--------------------------------------------------------------------------------------------------
+    }
 }
