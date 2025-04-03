@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
@@ -30,18 +29,15 @@ public class FilmController {
 
     @PostMapping
     public Object appendFilm(@RequestBody Film film) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", "SUCCESS");
-        response.put("film", film);
         try {
             checkingFilm(film);
             film.setId(generateId());
             films.put(film.getId(), film);
             log.info("ДОБАВЛЕНИЕ ФИЛЬМА");
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
             log.error("Ошибка валидации при добавлении фильма: {}", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
         }
     }
 
