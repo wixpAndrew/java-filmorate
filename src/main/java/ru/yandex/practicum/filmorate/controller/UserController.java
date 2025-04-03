@@ -39,10 +39,10 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (ValidationException exception) {
             log.error("Ошибка валидации при добавлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
         } catch (DuplicatedDataException ex) {
             log.error("Ошибка! дубликация при добавлении пользователя: {}", ex.getMessage());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
         }
     }
 
