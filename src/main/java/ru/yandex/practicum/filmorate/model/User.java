@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class User {
     int id;
 
-    String username;
+    String name;
 
     String login;
 
@@ -19,7 +19,7 @@ public class User {
 
     public User(int id, String username, String login, String password, String email, LocalDate localDate) {
         this.id = id;
-        this.username = username;
+        this.name = username;
         this.login = login;
         this.password = password;
         this.email = email;
