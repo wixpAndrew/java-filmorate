@@ -9,8 +9,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 @RestController
 @RequestMapping("/films")
@@ -80,4 +79,5 @@ public class FilmController {
             throw new ValidationException("Продолжительность фильма должна быть положительным числом!");
         }
     }
+
 }
