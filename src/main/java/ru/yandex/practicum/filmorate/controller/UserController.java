@@ -20,6 +20,7 @@ public class UserController {
 
     private final Map<Integer, User> users = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final List<String> validFields = Arrays.asList("id", "username", "login", "password", "email", "birthday");
 
     @GetMapping
     public Collection<User> getAllUsers() {
@@ -51,7 +52,6 @@ public class UserController {
         try {
             User finalUser = users.get(user.getId());
             checkingUser(user);
-
             boolean isNewEmail = !user.getEmail().equals(users.get(user.getId()).getEmail());
 
             boolean emailExists = users.values().stream()
