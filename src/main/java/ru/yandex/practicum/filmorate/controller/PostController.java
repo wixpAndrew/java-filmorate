@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-
-
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.Collection;
@@ -10,8 +8,6 @@ import java.util.Map;
 import ru.yandex.practicum.filmorate.model.Post;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-
-
 
 @RestController
 @RequestMapping("/posts")
