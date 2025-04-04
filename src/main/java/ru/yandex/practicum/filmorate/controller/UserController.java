@@ -33,7 +33,6 @@ public class UserController {
         if (user.getName() == null && user.getLogin() != null) {
             user.setName(user.getLogin());
         }
-        
         try {
             checkingUser(user);
             if (users.containsKey(user.getId())) {
