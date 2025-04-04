@@ -30,9 +30,10 @@ public class UserController {
 
     @PostMapping
     public Object appendUser(@RequestBody User user) {
-        if (user.getName() == null && user.getLogin()!=null) {
+        if (user.getName() == null && user.getLogin() != null) {
             user.setName(user.getLogin());
         }
+        
         try {
             checkingUser(user);
             if (users.containsKey(user.getId())) {
