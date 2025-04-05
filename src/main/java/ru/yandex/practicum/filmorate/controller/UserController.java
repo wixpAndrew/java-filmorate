@@ -87,10 +87,10 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (ValidationException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
