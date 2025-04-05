@@ -44,10 +44,10 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (ValidationException exception) {
             log.error("Ошибка валидации при добавлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (DuplicatedDataException ex) {
             log.error("Ошибка! дубликация при добавлении пользователя: {}", ex.getMessage());
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,10 +87,10 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (ValidationException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
