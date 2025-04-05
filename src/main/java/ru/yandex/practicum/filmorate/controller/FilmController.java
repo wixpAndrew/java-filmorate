@@ -41,43 +41,21 @@ public class FilmController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateFilm(@RequestBody Film film) {
+    public Object updateFilm(@RequestBody Film film) {
         try {
-            Film existingFilm = films.get(film.getId());
-
-            if (existingFilm == null) {
-                throw new IllegalArgumentException("Фильм не найден");
+            checkingFilm(film);
+            if (films.get(film.getId()) == null) {
+                throw new IllegalArgumentException("такого фильма нет !");
             }
-
-            if (film.getName() != null) {
-                existingFilm.setName(film.getName());
-            }
-
-            if (film.getDescription() != null) {
-                existingFilm.setDescription(film.getDescription());
-            }
-
-            if (film.getDuration() > 0) {
-                existingFilm.setDuration(film.getDuration());
-            }
-
-            if (film.getReleaseDate() != null) {
-                existingFilm.setReleaseDate(film.getReleaseDate());
-            }
-
-            films.put(film.getId(), existingFilm);
-
-            log.info("Фильм обновлен: {}", film.getId());
-            return new ResponseEntity<>(existingFilm, HttpStatus.OK);
-        } catch (ValidationException exception) {
-            log.error("Ошибка валидации при обновлении фильма: {}", exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+            films.put(film.getId(), film);
+            log.info("ОБНОВЛЕНИЕ ФИЛЬМА");
+            return new ResponseEntity<>(film, HttpStatus.OK);
+        } catch (ValidationException ex) {
+            log.error("Ошибка валидации при обновлении фильма: {}", ex.getMessage());
+            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException exception) {
-            log.error("Ошибка при обновлении фильма: {}", exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception exception) {
-            log.error("Ошибка при обновлении фильма: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Ошибка валидации при обновлении фильма: {}", exception.getMessage());
+            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
         }
     }
 
