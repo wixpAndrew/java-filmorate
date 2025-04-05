@@ -44,12 +44,18 @@ public class FilmController {
     public Object updateFilm(@RequestBody Film film) {
         try {
             checkingFilm(film);
+            if (films.get(film.getId()) == null) {
+                throw new IllegalArgumentException("такого фильма нет !");
+            }
             films.put(film.getId(), film);
             log.info("ОБНОВЛЕНИЕ ФИЛЬМА");
             return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
             log.error("Ошибка валидации при обновлении фильма: {}", ex.getMessage());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException exception) {
+            log.error("Ошибка валидации при обновлении фильма: {}", exception.getMessage());
+            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
         }
     }
 
