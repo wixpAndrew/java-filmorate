@@ -52,10 +52,10 @@ public class FilmController {
             return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
             log.error("Ошибка валидации при обновлении фильма: {}", ex.getMessage());
-            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(film, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении фильма: {}", exception.getMessage());
-            return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(film, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
