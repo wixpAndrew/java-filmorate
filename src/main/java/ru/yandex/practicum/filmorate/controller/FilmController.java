@@ -21,13 +21,15 @@ public class FilmController {
 
     private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
 
+    private int count = 0;
+
     @GetMapping
     public Collection<Film> getFilms() {
         return films.values();
     }
 
     @PostMapping
-    public Object appendFilm(@RequestBody Film film) {
+    public ResponseEntity<Film> appendFilm(@RequestBody Film film) {
         try {
             checkingFilm(film);
             film.setId(generateId());
@@ -41,7 +43,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Object updateFilm(@RequestBody Film film) {
+    public ResponseEntity<Film> updateFilm(@RequestBody Film film) {
         try {
             checkingFilm(film);
             if (films.get(film.getId()) == null) {
@@ -60,12 +62,7 @@ public class FilmController {
     }
 
     private int generateId() {
-        long currentMaxId = films.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-        return (int) ++currentMaxId;
+        return ++count;
     }
 
     private void checkingFilm(Film film) {
@@ -85,5 +82,4 @@ public class FilmController {
             throw new ValidationException("Продолжительность фильма должна быть положительным числом!");
         }
     }
-
 }

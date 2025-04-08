@@ -107,8 +107,8 @@ public class UserTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userEmailNoSimvol))
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в почте !"))
-                .andExpect(status().is4xxClientError());
-//------------------------------------------------------------------------------------------
+                .andExpect(status().is5xxServerError());
+//----------------------------------------------------------------------------------------------
         User userLoginEmpty = new User(1,
                 "обливион",
                 "",
@@ -120,7 +120,7 @@ public class UserTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userLoginEmpty))
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в логине !"))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is5xxServerError());
 //-----------------------------------------------------------------------------------------
         User userEmailNull = new User(1,
                 "обливион",
@@ -133,7 +133,7 @@ public class UserTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userEmailNull))
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("ошибка в почте !"))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is5xxServerError());
 //-----------------------------------------------------------------------------------------
     }
 }

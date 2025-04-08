@@ -22,6 +22,7 @@ public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final List<String> validFields = Arrays.asList("id", "username", "login", "password", "email", "birthday");
+    private int count = 0;
 
     @GetMapping
     public Collection<User> getAllUsers() {
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping
-    public Object appendUser(@RequestBody User user) {
+    public ResponseEntity<User> appendUser(@RequestBody User user) {
         if (user.getName() == null && user.getLogin() != null) {
             user.setName(user.getLogin());
         }
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping
-    public Object updateUser(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
             User finalUser = users.get(user.getId());
             checkingUser(user);
@@ -95,12 +96,7 @@ public class UserController {
     }
 
     private int generateId() {
-        long currentMaxId = users.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-        return (int) ++currentMaxId;
+        return ++count;
     }
 
     private void checkingUser(User user) {
