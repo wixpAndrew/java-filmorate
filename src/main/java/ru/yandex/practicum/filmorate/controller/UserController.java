@@ -1,0 +1,115 @@
+package ru.yandex.practicum.filmorate.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.User;
+
+import java.time.LocalDate;
+import java.util.*;
+
+import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
+
+@RestController
+@RequestMapping("/users")
+
+public class UserController {
+
+    private final Map<Integer, User> users = new HashMap<>();
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final List<String> validFields = Arrays.asList("id", "username", "login", "password", "email", "birthday");
+    private int count = 0;
+
+    @GetMapping
+    public Collection<User> getAllUsers() {
+        return users.values();
+    }
+
+    @PostMapping
+    public ResponseEntity<User> appendUser(@RequestBody User user) {
+        if (user.getName() == null && user.getLogin() != null) {
+            user.setName(user.getLogin());
+        }
+        try {
+            checkingUser(user);
+            if (users.containsKey(user.getId())) {
+                throw new DuplicatedDataException("Этот имейл уже используется");
+            }
+            user.setId(generateId());
+            users.put(user.getId(), user);
+            log.info("ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ValidationException exception) {
+            log.error("Ошибка валидации при добавлении пользователя: {}", exception.getMessage());
+            return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (DuplicatedDataException ex) {
+            log.error("Ошибка! дубликация при добавлении пользователя: {}", ex.getMessage());
+            return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        try {
+            User finalUser = users.get(user.getId());
+            checkingUser(user);
+            boolean isNewEmail = !user.getEmail().equals(users.get(user.getId()).getEmail());
+
+            boolean emailExists = users.values().stream()
+                    .anyMatch(userByBase -> userByBase.getEmail().equals(user.getEmail()));
+
+            if (finalUser == null) {
+                throw new IllegalArgumentException("Пользователь не найден");
+            }
+
+            if (isNewEmail && emailExists) {
+                throw new DuplicatedDataException("Этот имейл уже используется");
+            } else {
+                finalUser.setEmail(user.getEmail());
+            }
+
+            if (user.getPassword() != null) {
+                finalUser.setPassword(user.getPassword());
+            }
+
+            if (user.getName() != null) {
+                finalUser.setName(user.getName());
+            }
+
+            if (user.getLogin() != null) {
+                finalUser.setLogin(user.getLogin());
+            }
+            users.put(user.getId(), finalUser);
+            log.info("ОБНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ValidationException exception) {
+            log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalArgumentException exception) {
+            log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private int generateId() {
+        return ++count;
+    }
+
+    private void checkingUser(User user) {
+       if (!user.getEmail().contains("@") || user.getEmail() == null) {
+           throw new ValidationException("ошибка в почте !");
+       }
+
+       if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+            throw new ValidationException("ошибка в логине !");
+        }
+
+       if (user.getBirthday().isAfter(LocalDate.now())) {
+           throw new ValidationException("ошибка в указании Вашего Дня Рождения !");
+       }
+    }
+}
