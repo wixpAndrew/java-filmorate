@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -21,21 +22,21 @@ public class FilmController {
 
     private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
 
+    private InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
+
     private int count = 0;
 
     @GetMapping
     public Collection<Film> getFilms() {
-        return films.values();
+        return filmStorage.getAll();
     }
 
     @PostMapping
     public ResponseEntity<Film> appendFilm(@RequestBody Film film) {
         try {
-            checkingFilm(film);
-            film.setId(generateId());
-            films.put(film.getId(), film);
+            Film finalFilm = filmStorage.append(film);
             log.info("ДОБАВЛЕНИЕ ФИЛЬМА");
-            return new ResponseEntity<>(film, HttpStatus.OK);
+            return new ResponseEntity<>(finalFilm, HttpStatus.OK);
         } catch (ValidationException ex) {
             log.error("Ошибка валидации при добавлении фильма: {}", ex.getMessage());
             return new ResponseEntity<>(film, HttpStatus.BAD_REQUEST);
@@ -45,11 +46,7 @@ public class FilmController {
     @PutMapping
     public ResponseEntity<Film> updateFilm(@RequestBody Film film) {
         try {
-            checkingFilm(film);
-            if (films.get(film.getId()) == null) {
-                throw new IllegalArgumentException("такого фильма нет !");
-            }
-            films.put(film.getId(), film);
+            Film finalFilm = filmStorage.update(film);
             log.info("ОБНОВЛЕНИЕ ФИЛЬМА");
             return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
