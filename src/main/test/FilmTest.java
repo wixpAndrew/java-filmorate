@@ -42,8 +42,6 @@ public class FilmTest {
                 localDate,
                 100);
 
-        filmController.appendFilm(film);
-
         String result = objectMapper.writeValueAsString(film);
 
         this.mvc.perform(post("/films")

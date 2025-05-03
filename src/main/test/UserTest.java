@@ -56,7 +56,7 @@ public class UserTest {
     }
 
     @Test
-    public void updatingFilm() throws Exception {
+    public void updatingUser() throws Exception {
         LocalDate localDate = LocalDate.of(2009, 12, 28);
         User user1 = new User(1,
                 "обливион",
