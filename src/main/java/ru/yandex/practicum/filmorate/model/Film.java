@@ -2,7 +2,9 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.Getter;
 
+import java.util.ArrayList;
 import java.time.LocalDate;
 
 @Data
@@ -17,6 +19,9 @@ public class Film {
     int duration;
 
     LocalDate releaseDate;
+
+    @Getter
+    private final ArrayList<Integer> likesAndUsersId = new ArrayList<>();
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration) {
         this.id = id;

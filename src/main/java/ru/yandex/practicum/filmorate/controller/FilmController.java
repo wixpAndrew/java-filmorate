@@ -18,8 +18,6 @@ public class FilmController {
 
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    private HashMap<Integer, Film> films = new HashMap<>();
-
     private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
 
     private InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
