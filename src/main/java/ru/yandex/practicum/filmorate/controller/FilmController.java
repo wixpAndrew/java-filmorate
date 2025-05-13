@@ -20,19 +20,17 @@ public class FilmController {
 
     private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
 
-    private InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
-
-    private int count = 0;
+    private InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
 
     @GetMapping
     public Collection<Film> getFilms() {
-        return filmStorage.getAll();
+        return inMemoryFilmStorage.getAll();
     }
 
     @PostMapping
     public ResponseEntity<Film> appendFilm(@RequestBody Film film) {
         try {
-            Film finalFilm = filmStorage.append(film);
+            Film finalFilm = inMemoryFilmStorage.append(film);
             log.info("ДОБАВЛЕНИЕ ФИЛЬМА");
             return new ResponseEntity<>(finalFilm, HttpStatus.OK);
         } catch (ValidationException ex) {
@@ -44,7 +42,7 @@ public class FilmController {
     @PutMapping
     public ResponseEntity<Film> updateFilm(@RequestBody Film film) {
         try {
-            Film finalFilm = filmStorage.update(film);
+            Film finalFilm = inMemoryFilmStorage.update(film);
             log.info("ОБНОВЛЕНИЕ ФИЛЬМА");
             return new ResponseEntity<>(film, HttpStatus.OK);
         } catch (ValidationException ex) {
@@ -53,28 +51,6 @@ public class FilmController {
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении фильма: {}", exception.getMessage());
             return new ResponseEntity<>(film, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private int generateId() {
-        return ++count;
-    }
-
-    private void checkingFilm(Film film) {
-        if (film.getName().isEmpty()) {
-            throw new ValidationException("Имя не может быть пустым!");
-        }
-
-        if (film.getDescription().length() > 200) {
-            throw new ValidationException("Описание не может превышать 200 символов!");
-        }
-
-        if (film.getReleaseDate().isBefore(dateMin)) {
-            throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года!");
-        }
-
-        if (film.getDuration() <= 0) {
-            throw new ValidationException("Продолжительность фильма должна быть положительным числом!");
         }
     }
 }

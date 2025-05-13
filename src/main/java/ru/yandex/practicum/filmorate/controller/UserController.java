@@ -18,17 +18,17 @@ import java.util.Collection;
 public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
-    private InMemoryUserStorage inMemoryUser = new InMemoryUserStorage();
+    private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
 
     @GetMapping
     public Collection<User> getAllUsers() {
-        return inMemoryUser.getAll();
+        return inMemoryUserStorage.getAll();
     }
 
     @PostMapping
     public ResponseEntity<User> appendUser(@RequestBody User user) {
         try {
-            User created = inMemoryUser.append(user);
+            User created = inMemoryUserStorage.append(user);
             log.info("ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
             return new ResponseEntity<>(created, HttpStatus.OK);
         } catch (ValidationException exception) {
@@ -43,7 +43,7 @@ public class UserController {
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
-            User updated = inMemoryUser.update(user);
+            User updated = inMemoryUserStorage.update(user);
             log.info("ОБНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
             return new ResponseEntity<>(updated, HttpStatus.OK);
         }catch (ValidationException exception) {

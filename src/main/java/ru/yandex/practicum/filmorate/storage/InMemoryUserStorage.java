@@ -13,7 +13,6 @@ public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
     private int count = 0;
 
-
     @Override
     public User append(User user) {
         validateUser(user);
