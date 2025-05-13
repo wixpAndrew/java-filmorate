@@ -136,4 +136,45 @@ public class UserTest {
                 .andExpect(status().is5xxServerError());
 //-----------------------------------------------------------------------------------------
     }
+
+    @Test
+    public void addFriend() throws Exception{
+        LocalDate localDate = LocalDate.of(2009, 12, 28);
+        User user1 = new User(1,
+                "обливион",
+                "nice",
+                "dfdf",
+                "example@email.com",
+                localDate);
+        String result1 = objectMapper.writeValueAsString(user1);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result1))
+                .andExpect(status().isOk());
+
+        User user2 = new User(2,
+                "got",
+                "perfect",
+                "dfdfnj",
+                "reload@email.com",
+                localDate);
+        String result2 = objectMapper.writeValueAsString(user2);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result2))
+                .andExpect(status().isOk());
+
+            this.mvc.perform(put("/users/1/friends/2"))
+                    .andExpect(status().isOk());
+
+            // Проверяем, что друг добавился
+            this.mvc.perform(get("/users/1/friends"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].id").value(user2.getId()))
+                    .andExpect(jsonPath("$[0].name").value(user2.getName()))
+                    .andExpect(jsonPath("$[0].login").value(user2.getLogin()))
+                    .andExpect(jsonPath("$[0].password").value(user2.getPassword()))
+                    .andExpect(jsonPath("$[0].email").value(user2.getEmail()))
+                    .andExpect(jsonPath("$[0].birthday").value(user2.getBirthday().toString()));
+    }
 }

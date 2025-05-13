@@ -7,11 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -19,6 +24,7 @@ public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
+    private  UserService userService = new UserService(inMemoryUserStorage);
 
     @GetMapping
     public Collection<User> getAllUsers() {
@@ -52,6 +58,27 @@ public class UserController {
         } catch (IllegalArgumentException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+//----------------------------------------------------------------------------------------
+//----------------------- ДРУЗЬЯ--------------------------------------
+    @PutMapping("/{id}/friends/{friendId}")
+    public ResponseEntity<String> addFriend(@PathVariable int id, @PathVariable int friendId) {
+        try {
+            userService.addFriend(id, friendId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/friends")
+    public ResponseEntity<List<User>> getFriends(@PathVariable int id) {
+        try {
+            List<User> result = userService.getFriends(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

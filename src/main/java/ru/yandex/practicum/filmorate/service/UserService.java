@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.awt.im.spi.InputMethod;
+import java.io.PushbackReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +20,14 @@ public class UserService {
     private final UserStorage userStorage;
     private final HashMap<Integer, List<User>> friends = new HashMap<>();
 
+    @Autowired
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
     public void addFriend(int userId, int friendId) {
         User friend = getUser(friendId); //получаем друга как user по айди
+        User user = getUser(userId); // проверка есть ли вообще
         friends.computeIfAbsent(userId, k -> new ArrayList<>()).add(friend); // добавляем в мапу айди юзера, а потом список друзей
     }
 

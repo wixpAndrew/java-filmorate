@@ -28,8 +28,4 @@ public class User {
         this.birthday = localDate;
     }
 
-
-    public User() {
-
-    }
 }
