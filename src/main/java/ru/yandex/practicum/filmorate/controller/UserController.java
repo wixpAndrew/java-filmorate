@@ -12,9 +12,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
-    private  UserService userService = new UserService(inMemoryUserStorage);
+    private UserService userService = new UserService(inMemoryUserStorage);
 
     @GetMapping
     public Collection<User> getAllUsers() {
@@ -52,7 +50,7 @@ public class UserController {
             User updated = inMemoryUserStorage.update(user);
             log.info("ОБНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ");
             return new ResponseEntity<>(updated, HttpStatus.OK);
-        }catch (ValidationException exception) {
+        } catch (ValidationException exception) {
             log.error("Ошибка валидации при обновлении пользователя: {}", exception.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IllegalArgumentException exception) {
@@ -60,7 +58,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//----------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------
 //----------------------- ДРУЗЬЯ--------------------------------------
     @PutMapping("/{id}/friends/{friendId}")
     public ResponseEntity<String> addFriend(@PathVariable int id, @PathVariable int friendId) {
@@ -78,7 +77,27 @@ public class UserController {
             List<User> result = userService.getFriends(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public ResponseEntity<List<User>> deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        try {
+            userService.removeFriend(id, friendId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public ResponseEntity<List<User>> getCommonFriends(@PathVariable int id , @PathVariable int otherId) {
+        try {
+            List<User> result = userService.getCommonFriends(id, otherId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

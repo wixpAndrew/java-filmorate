@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,7 @@ public class UserTest {
     }
 
     @Test
-    public void addFriend() throws Exception{
+    public void addGetFriend() throws Exception {
         LocalDate localDate = LocalDate.of(2009, 12, 28);
         User user1 = new User(1,
                 "обливион",
@@ -176,5 +177,151 @@ public class UserTest {
                     .andExpect(jsonPath("$[0].password").value(user2.getPassword()))
                     .andExpect(jsonPath("$[0].email").value(user2.getEmail()))
                     .andExpect(jsonPath("$[0].birthday").value(user2.getBirthday().toString()));
+    }
+
+    @Test
+    public void deleteFriend() throws Exception {
+        LocalDate localDate = LocalDate.of(2009, 12, 28);
+        User user1 = new User(1,
+                "обливион",
+                "nice",
+                "dfdf",
+                "example@email.com",
+                localDate);
+        String result1 = objectMapper.writeValueAsString(user1);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result1))
+                .andExpect(status().isOk());
+
+        User user2 = new User(2,
+                "got",
+                "perfect",
+                "dfdfnj",
+                "reload@email.com",
+                localDate);
+        String result2 = objectMapper.writeValueAsString(user2);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result2))
+                .andExpect(status().isOk());
+
+        this.mvc.perform(delete("/users/1/friends/2"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void commonFriends() throws Exception {
+        LocalDate localDate = LocalDate.of(2009, 12, 28);
+        User user1 = new User(1,
+                "обливион1",
+                "nice",
+                "dfdf",
+                "example@email.com",
+                localDate);
+        String result1 = objectMapper.writeValueAsString(user1);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result1))
+                .andExpect(status().isOk());
+
+        User user2 = new User(2,
+                "got2",
+                "perfect",
+                "dfdfnj",
+                "reload@email.com",
+                localDate);
+        String result2 = objectMapper.writeValueAsString(user2);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result2))
+                .andExpect(status().isOk());
+
+        User user3 = new User(3,
+                "обливион3",
+                "nice",
+                "dfdf",
+                "exame@email.com",
+                localDate);
+        String result3 = objectMapper.writeValueAsString(user3);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result3))
+                .andExpect(status().isOk());
+
+        User user4 = new User(4,
+                "got4",
+                "perfect",
+                "dfdfnj",
+                "rel@email.com",
+                localDate);
+        String result4 = objectMapper.writeValueAsString(user4);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result4))
+                .andExpect(status().isOk());
+
+        User user5 = new User(5,
+                "обливион5",
+                "nice",
+                "dfdf",
+                "ele@email.com",
+                localDate);
+        String result5 = objectMapper.writeValueAsString(user5);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result5))
+                .andExpect(status().isOk());
+
+        User user6 = new User(6,
+                "got6",
+                "perfect",
+                "dfdfnj",
+                "r@email.com",
+                localDate);
+        String result6 = objectMapper.writeValueAsString(user6);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result6))
+                .andExpect(status().isOk());
+
+        User user7 = new User(6,
+                "got6",
+                "perfect",
+                "dfdfnj",
+                "road@email.com",
+                localDate);
+        String result7 = objectMapper.writeValueAsString(user7);
+        this.mvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(result7))
+                .andExpect(status().isOk());
+
+    //-----------------------------------------------------------------
+    // ----------для 1
+        this.mvc.perform(put("/users/1/friends/3"))
+                .andExpect(status().isOk());
+
+        this.mvc.perform(put("/users/1/friends/5"))
+                .andExpect(status().isOk());
+
+        this.mvc.perform(put("/users/1/friends/7"))
+                .andExpect(status().isOk());
+    // -----------------------------------------------------------------
+    //--------------- для 2
+        this.mvc.perform(put("/users/2/friends/4"))
+                .andExpect(status().isOk());
+
+        this.mvc.perform(put("/users/1/friends/6"))
+                .andExpect(status().isOk());
+
+        this.mvc.perform(put("/users/1/friends/7"))
+                .andExpect(status().isOk());
+
+    //-------- по итогу у 1 - 357, у 2 - 467, общий ->7
+
+        this.mvc.perform(get("/users/1/friends/common/2"))
+                .andExpect(status().isOk());
+
     }
 }

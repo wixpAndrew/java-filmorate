@@ -4,12 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
-
-import java.awt.im.spi.InputMethod;
-import java.io.PushbackReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +31,21 @@ public class UserService {
         if (userFriends != null) {
             userFriends.removeIf(u -> u.getId() == friendId);
         }
+    }
+
+    public List<User> getCommonFriends(int userId, int otherUserId) {
+        List<User> userFriends = friends.getOrDefault(userId, new ArrayList<>());
+        List<User> otherUserFriends = friends.getOrDefault(otherUserId, new ArrayList<>());
+
+        // Фильтруем и находим общих друзей
+        List<User> common = new ArrayList<>();
+        for (User friend : userFriends) {
+            if (otherUserFriends.contains(friend)) {
+                common.add(friend);
+            }
+        }
+
+        return common;
     }
 
     public List<User> getFriends(int userId) {
