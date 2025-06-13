@@ -52,12 +52,12 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> getAll() {
+    public Collection<User> getAllUsers() {
         return users.values();
     }
 
     @Override
-    public User getById(int id) {
+    public User getUserById(int id) {
         return users.get(id);
     }
 

@@ -18,14 +18,7 @@ public class FilmController {
 
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    private final LocalDate dateMin = LocalDate.of(1895, 12, 28);
-
     private InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
-
-    @GetMapping
-    public Collection<Film> getFilms() {
-        return inMemoryFilmStorage.getAll();
-    }
 
     @PostMapping
     public ResponseEntity<Film> appendFilm(@RequestBody Film film) {

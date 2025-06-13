@@ -7,9 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.model.Film;
-
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,8 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = FilmController.class)
 @WebMvcTest(FilmController.class)
 public class FilmTest {
-    private final Duration basikDuration = Duration.parse("PT2H30M");
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     @Autowired
     MockMvc mvc;

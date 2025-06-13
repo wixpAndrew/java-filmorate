@@ -1,13 +1,10 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 @Service
@@ -23,7 +20,7 @@ public class FilmService {
 
     public void addLike(int filmId, int userId) {
         Film film = getFilm(filmId);
-        if (UserStorage.getById(userId) == null) { // есть ли вообще такой User
+        if (UserStorage.getUserById(userId) == null) { // есть ли вообще такой User
             throw new NotFoundException("Пользователь не найден: id=" + userId);
         }
         if (FilmStorage.getById(filmId).getLikesAndUsersId().contains(userId)) { // user уже лайкнул

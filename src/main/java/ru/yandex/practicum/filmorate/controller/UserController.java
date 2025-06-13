@@ -24,10 +24,6 @@ public class UserController {
     private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
     private UserService userService = new UserService(inMemoryUserStorage);
 
-    @GetMapping
-    public Collection<User> getAllUsers() {
-        return inMemoryUserStorage.getAll();
-    }
 
     @PostMapping
     public ResponseEntity<User> appendUser(@RequestBody User user) {

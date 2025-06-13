@@ -53,7 +53,7 @@ public class UserService {
     }
 
     private User getUser(int id) {
-        User user = userStorage.getById(id);
+        User user = userStorage.getUserById(id);
         if (user == null) {
             throw new NotFoundException("Пользователь не найден: id=" + id);
         }

@@ -285,8 +285,8 @@ public class UserTest {
                         .content(result6))
                 .andExpect(status().isOk());
 
-        User user7 = new User(6,
-                "got6",
+        User user7 = new User(7,
+                "got7",
                 "perfect",
                 "dfdfnj",
                 "road@email.com",
@@ -312,16 +312,21 @@ public class UserTest {
         this.mvc.perform(put("/users/2/friends/4"))
                 .andExpect(status().isOk());
 
-        this.mvc.perform(put("/users/1/friends/6"))
+        this.mvc.perform(put("/users/2/friends/6"))
                 .andExpect(status().isOk());
 
-        this.mvc.perform(put("/users/1/friends/7"))
+        this.mvc.perform(put("/users/2/friends/7"))
                 .andExpect(status().isOk());
 
     //-------- по итогу у 1 - 357, у 2 - 467, общий ->7
 
         this.mvc.perform(get("/users/1/friends/common/2"))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(user7.getId()))
+                .andExpect(jsonPath("$[0].name").value(user7.getName()))
+                .andExpect(jsonPath("$[0].login").value(user7.getLogin()))
+                .andExpect(jsonPath("$[0].password").value(user7.getPassword()))
+                .andExpect(jsonPath("$[0].email").value(user7.getEmail()))
+                .andExpect(jsonPath("$[0].birthday").value(user7.getBirthday().toString()));
     }
 }
