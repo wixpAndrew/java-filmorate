@@ -24,6 +24,10 @@ public class UserController {
     private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
     private UserService userService = new UserService(inMemoryUserStorage);
 
+    @GetMapping
+    public Collection<User> getAllUsers() {
+        return inMemoryUserStorage.getAllUsers();
+    }
 
     @PostMapping
     public ResponseEntity<User> appendUser(@RequestBody User user) {
@@ -56,7 +60,8 @@ public class UserController {
     }
 
     //----------------------------------------------------------------------------------------
-//----------------------- ДРУЗЬЯ--------------------------------------
+    //----------------------- ДРУЗЬЯ----------------------------------------------------------
+
     @PutMapping("/{id}/friends/{friendId}")
     public ResponseEntity<String> addFriend(@PathVariable int id, @PathVariable int friendId) {
         try {

@@ -6,7 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
+
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,6 +29,7 @@ public class FilmTest {
 
     @Autowired
     FilmController filmController;
+
 
     @Test
     public void appendingFilm() throws Exception {
@@ -93,17 +98,17 @@ public class FilmTest {
 
     @Test
     public void validationExceptions() throws Exception {
-        LocalDate localDate =  LocalDate.of(2009, 12, 5);
+        LocalDate localDate = LocalDate.of(2009, 12, 5);
         Film filmEmptyName = new Film(1,
                 "",
                 "nice",
-               localDate,
-               100);
+                localDate,
+                100);
 
         Film filmLimitSimvols = new Film(1,
                 "обливион",
                 "dsmfokdfowforewofjnerojfnerojfoernfojnernfjnojfoejnfrenjrfenjoeorjonjejnnernfjernjefrofonernjernfernnfefernfernefrojnfernojfrenfjnoefrjnrfenjfrjofrenjfrjnorefjnefrnjoefrjnofrejnofrjnofjjonrefjnorefjnorefjnoefrjnoferjnoefrjnoferjonfernjoferjnofernfrejnoerfnefrnferjnoferojnerfnjoerjnoferojnfejnorfejnorfjnoerfjnoerfojerfnjoerfonjerojnfeorjnfojernfojnerfojnerojfnerojngfoerjngoerjgoierjmgoierngoiernpogierogesojgopejglekrwgm[oeirg[oerwjgpjewrwgojwertngeirwjtnglkewrtgm[ojrtngo[rtujgojrtwgpijetngpoiwetug[uetwjg[oewtgkoan[go[uogrhgj[oatgno[jaetngajtgnotoaugtanoeugjnatjngoajnotrjno[grjnojngfjnfgjnofa[nfgnjognfngjoo",
-              localDate,
+                localDate,
                 100);
 
         LocalDate badLocalDate = LocalDate.of(1700, 1, 1);
@@ -145,5 +150,38 @@ public class FilmTest {
                 ).andExpect(r -> r.getResponse().getContentAsString().equals("Продолжительность фильма должна быть положительным числом!"))
                 .andExpect(status().is4xxClientError());
         //--------------------------------------------------------------------------------------------------
+        //----------------------------------лайки--------------------------------------------------
+
     }
+        @Test
+        public void likesFilms() throws Exception  {
+            LocalDate localDate = LocalDate.of(2009, 10,4);
+            Film film = new Film(1,
+                    "обливион",
+                    "nice",
+                    localDate,
+                    100);
+
+            this.mvc.perform(post("/films") // добавление фильма
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(film))
+                    ).andExpect(status().isOk());
+
+            User user = new User(1,
+                    "обливион1",
+                    "nice",
+                    "dfdf",
+                    "example@email.com",
+                    localDate);
+            String result1 = objectMapper.writeValueAsString(user);
+            this.mvc.perform(post("/users") // добавлние пользователя
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(result1))
+                    .andExpect(status().isOk());
+
+            this.mvc.perform(put("/films/1/like/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(result1))
+                    .andExpect(status().isOk());
+        }
 }
