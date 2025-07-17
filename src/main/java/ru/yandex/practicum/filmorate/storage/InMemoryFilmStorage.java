@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 import java.util.*;
 
-@Component("inMemory")
+@Component
 public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Integer, Film> films = new HashMap<>();
@@ -18,7 +18,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film append(Film film) {
         validateFilm(film);
-        film.setId(generateId());
+        if (film.getId() == null) {
+            film.setId(generateId());
+        }
         films.put(film.getId(), film);
         return film;
     }

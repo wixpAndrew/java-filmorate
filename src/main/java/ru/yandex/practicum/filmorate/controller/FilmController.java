@@ -2,13 +2,14 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
@@ -22,9 +23,11 @@ public class FilmController {
 
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    private InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
-    private InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
-    private FilmService filmService = new FilmService(inMemoryFilmStorage, inMemoryUserStorage);
+    @Autowired
+    InMemoryFilmStorage inMemoryFilmStorage;
+
+    @Autowired
+    FilmService filmService;
 
     @GetMapping
     public Collection<Film> getFilms() {
@@ -65,10 +68,10 @@ public class FilmController {
     public  ResponseEntity<Film> likingByUser(@PathVariable int filmId, @PathVariable int userId) {
         try {
             Film film = inMemoryFilmStorage.getById(filmId);
-
             filmService.addLike(filmId, userId);
+
             return new ResponseEntity<>(film, HttpStatus.OK);
-        } catch (NotFoundException exception) {
+        } catch (NotFoundException | DuplicatedDataException exception) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -84,5 +87,4 @@ public class FilmController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

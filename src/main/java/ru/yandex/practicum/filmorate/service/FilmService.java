@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -10,7 +11,10 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 @Service
 public class FilmService {
 
+    @Autowired
     private final FilmStorage FilmStorage;
+
+    @Autowired
     private final UserStorage UserStorage;
 
     public FilmService(FilmStorage FilmStorage, UserStorage UserStorage) {

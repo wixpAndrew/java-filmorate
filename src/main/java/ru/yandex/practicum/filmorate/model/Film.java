@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Film {
-    int id;
+    Integer id;
 
     String name;
 
