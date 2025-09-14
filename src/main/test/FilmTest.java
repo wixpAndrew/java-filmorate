@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -20,7 +21,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ContextConfiguration(classes = {FilmController.class, UserController.class, InMemoryFilmStorage.class, FilmService.class,  InMemoryUserStorage.class})
+@ContextConfiguration(classes =
+        {FilmController.class,
+        UserController.class,
+        InMemoryFilmStorage.class,
+        FilmService.class,
+        InMemoryUserStorage.class,
+                UserService.class})
+
 @WebMvcTest(FilmController.class)
 public class FilmTest {
 
@@ -33,8 +41,6 @@ public class FilmTest {
     @Autowired
     FilmController filmController;
 
-    @Autowired
-    UserController userController;
 
     @Test
     public void appendingFilm() throws Exception {

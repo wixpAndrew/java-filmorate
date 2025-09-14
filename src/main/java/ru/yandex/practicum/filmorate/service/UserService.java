@@ -12,7 +12,9 @@ import java.util.List;
 @Service
 public class UserService {
 
+    @Autowired
     private final UserStorage userStorage;
+
     private final HashMap<Integer, List<User>> friends = new HashMap<>();
 
     @Autowired
